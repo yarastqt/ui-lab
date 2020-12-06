@@ -17,7 +17,7 @@ export type PressHookResult = {
 }
 
 // TODO: Состояние pressed может поступить снаружи.
-export function usePress({ disabled }: PressHookProps): PressHookResult {
+export function usePress({ isDisabled }: PressHookProps): PressHookResult {
   const [pressed, setPressed] = useState(false)
 
   // TODO: Все создаваемые функции должны быть обернуты в useCallback.
@@ -41,7 +41,7 @@ export function usePress({ disabled }: PressHookProps): PressHookResult {
   const onClick = (event: MouseEvent<HTMLElement>) => {
     if (event.button === 0) {
       event.stopPropagation()
-      if (disabled) {
+      if (isDisabled) {
         event.preventDefault()
       } else {
         event.currentTarget.focus({ preventScroll: true })
@@ -66,7 +66,7 @@ export function usePress({ disabled }: PressHookProps): PressHookResult {
   }
 
   return {
-    pressed,
+    isPressed: pressed,
     pressProps: { onKeyDown, onKeyUp, onClick, onMouseDown, onMouseUp, onMouseLeave },
   }
 }
