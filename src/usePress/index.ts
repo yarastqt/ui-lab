@@ -1,11 +1,11 @@
 import React, { KeyboardEventHandler, MouseEvent, MouseEventHandler, useState } from 'react'
 
-type PressHookProps = {
-  disabled?: boolean
+export type PressHookProps = {
+  isDisabled?: boolean
 }
 
-type PressHookResult = {
-  pressed: boolean
+export type PressHookResult = {
+  isPressed: boolean
   pressProps: {
     onKeyDown: KeyboardEventHandler<HTMLElement>
     onKeyUp: KeyboardEventHandler<HTMLElement>
