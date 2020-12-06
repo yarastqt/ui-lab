@@ -1,5 +1,18 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 
-export const Button: FC = ({ children }) => {
-  return <button>{children}</button>
+import { useButton } from '../useButton'
+
+export type ButtonProsp = {
+  disabled?: boolean
+}
+
+export const Button: FC<ButtonProsp> = ({ children, disabled }) => {
+  const ref = useRef<HTMLButtonElement>(null)
+  const { isPressed, buttonProps } = useButton({ isDisabled: disabled })
+
+  return (
+    <button {...buttonProps} ref={ref} data-pressed={isPressed}>
+      {children}
+    </button>
+  )
 }
