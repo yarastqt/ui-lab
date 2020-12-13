@@ -33,6 +33,7 @@ export function useButton(props: ButtonHookProps): ButtonHookResult {
   return {
     isPressed,
     buttonProps: {
+      // @ts-expect-error (TODO: Fix this.)
       disabled: isDisabled,
       ...pressProps,
       ...additionalProps,
