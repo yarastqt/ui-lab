@@ -74,7 +74,6 @@ export function usePress({ isDisabled }: PressHookProps): PressHookResult {
 function isValidKeyboardEvent(event: KeyboardEvent): boolean {
   const { key, target } = event
   const element = target as HTMLElement
-  const { tagName } = element
 
   const role = element.getAttribute('role')
   const isHTMLAnchorLink = element.tagName === 'A' && element.hasAttribute('href')
@@ -82,8 +81,6 @@ function isValidKeyboardEvent(event: KeyboardEvent): boolean {
   // Обрабатываем только случаи нажатия `Space` и `Enter` (Spacebar используется для ie11).
   return (
     (key === 'Enter' || key === ' ' || key === 'Spacebar') &&
-    tagName !== 'INPUT' &&
-    tagName !== 'TEXTAREA' &&
     // Элемент-ссылка должен обрабатываться нативно, если только это не `role=button`.
     (!isHTMLAnchorLink || (role === 'button' && key !== 'Enter')) &&
     // Элемент с `role=link` должен обрабатываться только с клавишей `Enter`.
