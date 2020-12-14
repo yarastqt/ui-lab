@@ -1,6 +1,6 @@
 import React, { FC, useRef } from 'react'
 
-import { BUTTON_NEW_LAYOUT } from '../features'
+import { BUTTON_NEW_LAYOUT, isFeatureEnabled } from '../features'
 import { useButton } from '../useButton'
 
 export type ButtonProps = {
@@ -11,7 +11,11 @@ export const Button: FC<ButtonProps> = ({ children, disabled, ...props }) => {
   const ref = useRef<HTMLButtonElement>(null)
   const { isPressed, buttonProps } = useButton({ isDisabled: disabled, ...props })
 
-  if (process.env[BUTTON_NEW_LAYOUT.value]) {
+  // TODO: Пример с css-modules.
+  // TODO: Add example with styled-components.
+  // TODO: Исследовать проблему с интеграцией в других компонентах в одно время.
+  // TODO: Проверить работу с динамическими импортами.
+  if (isFeatureEnabled(BUTTON_NEW_LAYOUT, Button)) {
     return (
       <button {...buttonProps} ref={ref} data-pressed={isPressed}>
         <span>addonBefore</span>
