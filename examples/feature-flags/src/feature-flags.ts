@@ -1,3 +1,3 @@
-export function isFeatureEnabled(feature: any): boolean {
-  return false;
+export function isFeatureEnabled(_feature: { value: string; component: string }): boolean {
+  return false
 }

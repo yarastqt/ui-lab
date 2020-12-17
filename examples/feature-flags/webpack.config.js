@@ -32,10 +32,15 @@ module.exports = {
       template: resolve(__dirname, 'public/index.html'),
     }),
 
-    new FeatureFlagsWebpackPlugin(),
-
-    // new FeaturePlugin(
-    //   [BUTTON_NEW_LAYOUT, { enabled: true }],
-    // ),
+    new FeatureFlagsWebpackPlugin([
+      // {
+      //   value: 'FEATURE_1',
+      //   component: 'Button',
+      // },
+      {
+        value: 'FEATURE_2',
+        component: 'Button',
+      },
+    ]),
   ],
 }
