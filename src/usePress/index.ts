@@ -1,4 +1,5 @@
-import React, { KeyboardEventHandler, MouseEvent, MouseEventHandler, useState } from 'react'
+import React, { HTMLAttributes, KeyboardEventHandler, MouseEvent, MouseEventHandler, useMemo, useState } from 'react'
+import { disableTextSelection, restoreTextSelection } from './selection';
 
 export type PressHookProps = {
   isDisabled?: boolean
@@ -20,23 +21,32 @@ export type PressHookResult = {
 export function usePress({ isDisabled }: PressHookProps): PressHookResult {
   const [pressed, setPressed] = useState(false)
 
-  // TODO: Все создаваемые функции должны быть обернуты в useCallback.
-  const onMouseDown = (event: MouseEvent<HTMLElement>) => {
-    // Предотвращаем потерю фокуса с элемента.
-    if (event.button === 0) {
-      event.preventDefault()
+  const pressProps = useMemo(() => {
+    const props: HTMLAttributes<HTMLElement> = {}
+
+    if (typeof PointerEvent !== 'undefined') {
+      props.onPointerDown = () => {
+        disableTextSelection()
+        setPressed(true)
+      }
+      props.onPointerUp = () => {
+        restoreTextSelection()
+        setPressed(false)
+      }
+    } else {
+      props.onMouseDown = (event: MouseEvent<HTMLElement>) => {
+        if (event.button === 0) {
+          event.preventDefault()
+        }
+
+        setPressed(true)
+      }
+      props.onMouseUp = () => setPressed(false)
+      props.onMouseLeave = () => setPressed(false)
     }
 
-    setPressed(true)
-  }
-
-  const onMouseUp = () => {
-    setPressed(false)
-  }
-
-  const onMouseLeave = () => {
-    setPressed(false)
-  }
+    return props
+  }, []);
 
   const onClick = (event: MouseEvent<HTMLElement>) => {
     if (event.button === 0) {
@@ -67,7 +77,7 @@ export function usePress({ isDisabled }: PressHookProps): PressHookResult {
 
   return {
     isPressed: pressed,
-    pressProps: { onKeyDown, onKeyUp, onClick, onMouseDown, onMouseUp, onMouseLeave },
+    pressProps: { onKeyDown, onKeyUp, onClick, ...pressProps },
   }
 }
 
